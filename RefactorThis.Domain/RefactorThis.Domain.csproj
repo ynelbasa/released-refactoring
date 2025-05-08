@@ -38,6 +38,8 @@
 		<Reference Include="System.Xml" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="Constants\InvoiceMessages.cs" />
+		<Compile Include="Constants\InvoiceValidationMessages.cs" />
 		<Compile Include="Entities\Invoice.cs" />
 		<Compile Include="Entities\Payment.cs" />
 		<Compile Include="Enums\InvoiceType.cs" />
@@ -46,6 +48,7 @@
 		<Compile Include="Exceptions\MissingInvoiceException.cs" />
 		<Compile Include="Interfaces\IInvoiceRepository.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
+		<Compile Include="Result.cs" />
 		<Compile Include="Services\InvoicePaymentProcessor.cs" />
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

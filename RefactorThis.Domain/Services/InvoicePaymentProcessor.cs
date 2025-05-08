@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RefactorThis.Domain.Constants;
 using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Enums;
 using RefactorThis.Domain.Exceptions;
@@ -31,26 +32,26 @@ namespace RefactorThis.Domain.Services
             _invoiceRepository = invoiceRepository;
         }
 
-        public string ProcessPayment(Payment payment)
+        public Result ProcessPayment(Payment payment)
         {
             var invoice = _invoiceRepository.GetInvoice(payment.Reference);
             ValidateInvoice(invoice);
 
             var isPaymentNotRequired = invoice.Amount == 0 && (invoice.Payments == null || !invoice.Payments.Any());
-            if (isPaymentNotRequired) return "no payment needed";
+            if (isPaymentNotRequired) return Result.Failure(InvoiceValidationMessages.PaymentNotRequired);
 
             var isInvoiceFullyPaid = invoice.Payments.Sum(x => x.Amount) != 0 &&
                                      invoice.Amount == invoice.Payments.Sum(x => x.Amount);
-            if (isInvoiceFullyPaid) return "invoice was already fully paid";
+            if (isInvoiceFullyPaid) return Result.Failure(InvoiceValidationMessages.InvoiceAlreadyFullyPaid);
 
             var isOverpayingPartialAmount = invoice.Payments.Sum(x => x.Amount) != 0 &&
                                             payment.Amount > (invoice.Amount - invoice.AmountPaid);
             if (isOverpayingPartialAmount)
-                return "the payment is greater than the partial amount remaining";
+                return Result.Failure(InvoiceValidationMessages.PaymentExceedsPartialAmount);
 
             var isOverpayingInvoiceAmount = payment.Amount > invoice.Amount;
             if (isOverpayingInvoiceAmount)
-                return "the payment is greater than the invoice amount";
+                return Result.Failure(InvoiceValidationMessages.PaymentExceedsInvoiceAmount);
 
             var hasInitialPayment = invoice.Payments != null && invoice.Payments.Any();
             var responseMessage = hasInitialPayment
@@ -61,22 +62,22 @@ namespace RefactorThis.Domain.Services
             return responseMessage;
         }
 
-        private string ProcessSucceedingPayment(Payment payment, Invoice invoice)
+        private Result ProcessSucceedingPayment(Payment payment, Invoice invoice)
         {
             var isFinalPayment = (invoice.Amount - invoice.AmountPaid) == payment.Amount;
             _succeedingPaymentCalculators[invoice.Type](payment, invoice);
             var responseMessage = isFinalPayment
-                ? "final partial payment received, invoice is now fully paid"
-                : "another partial payment received, still not fully paid";
-            return responseMessage;
+                ? InvoiceMessages.FinalPaymentReceived
+                : InvoiceMessages.PartialPaymentReceived;
+            return Result.Success(responseMessage);
         }
 
-        private string ProcessInitialPayment(Payment payment, Invoice invoice)
+        private Result ProcessInitialPayment(Payment payment, Invoice invoice)
         {
             var isFullPayment = invoice.Amount == payment.Amount;
             _initialPaymentCalculators[invoice.Type](payment, invoice);
-            var responseMessage = isFullPayment ? "invoice is now fully paid" : "invoice is now partially paid";
-            return responseMessage;
+            var responseMessage = isFullPayment ? InvoiceMessages.FullyPaid : InvoiceMessages.PartiallyPaid;
+            return Result.Success(responseMessage);
         }
 
         private static void ValidateInvoice(Invoice invoice)
