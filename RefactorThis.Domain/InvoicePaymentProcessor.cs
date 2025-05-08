@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
+using RefactorThis.Domain.Entities;
+using RefactorThis.Domain.Enums;
 using RefactorThis.Domain.Interfaces;
-using RefactorThis.Persistence;
 
 namespace RefactorThis.Domain
 {

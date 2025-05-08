@@ -38,15 +38,12 @@
 		<Reference Include="System.Xml" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="Entities\Invoice.cs" />
+		<Compile Include="Entities\Payment.cs" />
+		<Compile Include="Enums\InvoiceType.cs" />
 		<Compile Include="Interfaces\IInvoiceRepository.cs" />
 		<Compile Include="InvoicePaymentProcessor.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
-	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\RefactorThis.Persistence\RefactorThis.Persistence.csproj">
-	    <Project>{33cdc796-ff75-449c-9637-59c2efc46361}</Project>
-	    <Name>RefactorThis.Persistence</Name>
-	  </ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

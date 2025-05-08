@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using RefactorThis.Domain.Enums;
 
-namespace RefactorThis.Persistence
+namespace RefactorThis.Domain.Entities
 {
     public class Invoice
     {
@@ -10,11 +11,5 @@ namespace RefactorThis.Persistence
         public List<Payment> Payments { get; set; }
 
         public InvoiceType Type { get; set; }
-    }
-
-    public enum InvoiceType
-    {
-        Standard,
-        Commercial
     }
 }

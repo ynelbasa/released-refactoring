@@ -1,4 +1,4 @@
-﻿using RefactorThis.Persistence;
+﻿using RefactorThis.Domain.Entities;
 
 namespace RefactorThis.Domain.Interfaces
 {

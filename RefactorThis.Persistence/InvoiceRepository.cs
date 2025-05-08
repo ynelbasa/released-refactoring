@@ -1,3 +1,5 @@
+using RefactorThis.Domain.Entities;
+
 namespace RefactorThis.Persistence
 {
     public class InvoiceRepository
