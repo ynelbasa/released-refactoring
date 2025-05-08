@@ -11,12 +11,12 @@ namespace RefactorThis.Domain.Tests
     public class InvoicePaymentProcessorTests
     {
         private readonly Mock<IInvoiceRepository> _invoiceRepositoryMock;
-        private readonly InvoiceService _invoiceService;
+        private readonly InvoicePaymentProcessor _invoicePaymentProcessor;
 
         public InvoicePaymentProcessorTests()
         {
             _invoiceRepositoryMock = new Mock<IInvoiceRepository>();
-            _invoiceService = new InvoiceService(_invoiceRepositoryMock.Object);
+            _invoicePaymentProcessor = new InvoicePaymentProcessor(_invoiceRepositoryMock.Object);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace RefactorThis.Domain.Tests
 
             // Act
             // Assert
-            var exception = Assert.Throws<InvalidOperationException>(() => _invoiceService.ProcessPayment(payment));
+            var exception = Assert.Throws<InvalidOperationException>(() => _invoicePaymentProcessor.ProcessPayment(payment));
             Assert.AreEqual(failureMessage, exception.Message);
         }
 
@@ -49,7 +49,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "no payment needed";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -68,7 +68,7 @@ namespace RefactorThis.Domain.Tests
 
             // Act
             // Assert
-            var exception = Assert.Throws<InvalidOperationException>(() => _invoiceService.ProcessPayment(payment));
+            var exception = Assert.Throws<InvalidOperationException>(() => _invoicePaymentProcessor.ProcessPayment(payment));
             Assert.AreEqual(failureMessage, exception.Message);
         }
 
@@ -90,7 +90,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "invoice was already fully paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -114,7 +114,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "the payment is greater than the partial amount remaining";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -136,7 +136,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "the payment is greater than the invoice amount";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -162,7 +162,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "final partial payment received, invoice is now fully paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -188,7 +188,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "final partial payment received, invoice is now fully paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -210,7 +210,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "invoice was already fully paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -236,7 +236,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "another partial payment received, still not fully paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -261,7 +261,7 @@ namespace RefactorThis.Domain.Tests
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual("another partial payment received, still not fully paid", result);
@@ -283,7 +283,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "invoice is now fully paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -305,7 +305,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "invoice is now fully paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -328,7 +328,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "invoice is now partially paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
@@ -351,7 +351,7 @@ namespace RefactorThis.Domain.Tests
             const string failureMessage = "invoice is now partially paid";
 
             // Act
-            var result = _invoiceService.ProcessPayment(payment);
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
 
             // Assert
             Assert.AreEqual(failureMessage, result);
