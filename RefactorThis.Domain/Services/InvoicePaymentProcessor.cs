@@ -4,7 +4,6 @@ using System.Linq;
 using RefactorThis.Domain.Constants;
 using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Enums;
-using RefactorThis.Domain.Exceptions;
 using RefactorThis.Domain.Interfaces;
 
 namespace RefactorThis.Domain.Services
@@ -35,14 +34,21 @@ namespace RefactorThis.Domain.Services
         public Result ProcessPayment(Payment payment)
         {
             var invoice = _invoiceRepository.GetInvoice(payment.Reference);
-            ValidateInvoice(invoice);
+
+            if (invoice == null)
+                return Result.Failure(InvoiceValidationMessages.InvoiceNotFound);
+
+            if (invoice.Amount == 0 && invoice.Payments != null)
+                return Result.Failure(InvoiceValidationMessages.InvalidInvoice);
 
             var isPaymentNotRequired = invoice.Amount == 0 && (invoice.Payments == null || !invoice.Payments.Any());
-            if (isPaymentNotRequired) return Result.Failure(InvoiceValidationMessages.PaymentNotRequired);
+            if (isPaymentNotRequired)
+                return Result.Failure(InvoiceValidationMessages.PaymentNotRequired);
 
             var isInvoiceFullyPaid = invoice.Payments.Sum(x => x.Amount) != 0 &&
                                      invoice.Amount == invoice.Payments.Sum(x => x.Amount);
-            if (isInvoiceFullyPaid) return Result.Failure(InvoiceValidationMessages.InvoiceAlreadyFullyPaid);
+            if (isInvoiceFullyPaid)
+                return Result.Failure(InvoiceValidationMessages.InvoiceAlreadyFullyPaid);
 
             var isOverpayingPartialAmount = invoice.Payments.Sum(x => x.Amount) != 0 &&
                                             payment.Amount > (invoice.Amount - invoice.AmountPaid);
@@ -78,15 +84,6 @@ namespace RefactorThis.Domain.Services
             _initialPaymentCalculators[invoice.Type](payment, invoice);
             var responseMessage = isFullPayment ? InvoiceMessages.FullyPaid : InvoiceMessages.PartiallyPaid;
             return Result.Success(responseMessage);
-        }
-
-        private static void ValidateInvoice(Invoice invoice)
-        {
-            if (invoice == null)
-                throw new MissingInvoiceException();
-
-            if (invoice.Amount == 0 && invoice.Payments != null)
-                throw new InvalidInvoiceStateException();
         }
 
         private static void CalculateInitialPayment(Payment payment, Invoice invoice)

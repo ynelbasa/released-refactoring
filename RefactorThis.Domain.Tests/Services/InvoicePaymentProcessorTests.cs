@@ -3,7 +3,6 @@ using Moq;
 using NUnit.Framework;
 using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Enums;
-using RefactorThis.Domain.Exceptions;
 using RefactorThis.Domain.Interfaces;
 using RefactorThis.Domain.Services;
 
@@ -22,7 +21,7 @@ namespace RefactorThis.Domain.Tests.Services
         }
 
         [Test]
-        public void Should_ThrowException_When_NoInvoiceFoundForPaymentReference()
+        public void Should_ReturnFailureMessage_When_NoInvoiceFoundForPaymentReference()
         {
             // Arrange
             Invoice nullInvoice = null;
@@ -31,10 +30,11 @@ namespace RefactorThis.Domain.Tests.Services
             const string failureMessage = "There is no invoice matching this payment";
 
             // Act
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
+
             // Assert
-            var exception =
-                Assert.Throws<MissingInvoiceException>(() => _invoicePaymentProcessor.ProcessPayment(payment));
-            Assert.AreEqual(failureMessage, exception.Message);
+            Assert.False(result.IsSuccess());
+            Assert.AreEqual(failureMessage, result.GetMessage());
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace RefactorThis.Domain.Tests.Services
         }
 
         [Test]
-        public void Should_ThrowException_When_InvoiceIsInvalidHasZeroAmountAndHasPayments()
+        public void Should_ReturnFailureMessage_When_InvoiceIsInvalidHasZeroAmountAndHasPayments()
         {
             // Arrange
             var payment = new Payment { Amount = 20 };
@@ -71,10 +71,11 @@ namespace RefactorThis.Domain.Tests.Services
                 "The invoice is in an invalid state, it has an amount of 0 and it has payments.";
 
             // Act
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
+
             // Assert
-            var exception =
-                Assert.Throws<InvalidInvoiceStateException>(() => _invoicePaymentProcessor.ProcessPayment(payment));
-            Assert.AreEqual(failureMessage, exception.Message);
+            Assert.False(result.IsSuccess());
+            Assert.AreEqual(failureMessage, result.GetMessage());
         }
 
         [Test]

@@ -43,9 +43,6 @@
 		<Compile Include="Entities\Invoice.cs" />
 		<Compile Include="Entities\Payment.cs" />
 		<Compile Include="Enums\InvoiceType.cs" />
-		<Compile Include="Exceptions\InvalidInvoiceStateException.cs" />
-		<Compile Include="Exceptions\InvalidInvoiceTypeException.cs" />
-		<Compile Include="Exceptions\MissingInvoiceException.cs" />
 		<Compile Include="Interfaces\IInvoiceRepository.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
 		<Compile Include="Result.cs" />
