@@ -49,7 +49,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment();
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string failureMessage = "no payment needed";
+            const string failureMessage = "No payment needed";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
@@ -93,7 +93,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment();
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string failureMessage = "invoice was already fully paid";
+            const string failureMessage = "Invoice was already fully paid";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
@@ -118,7 +118,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment { Amount = 6 };
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string failureMessage = "the payment is greater than the partial amount remaining";
+            const string failureMessage = "The payment is greater than the partial amount remaining";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
@@ -140,7 +140,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment { Amount = 6 };
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string failureMessage = "the payment is greater than the invoice amount";
+            const string failureMessage = "The payment is greater than the invoice amount";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
@@ -168,7 +168,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment { Amount = 5 };
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string successMessage = "final partial payment received, invoice is now fully paid";
+            const string successMessage = "Final partial payment received, invoice is now fully paid";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
@@ -192,7 +192,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment { Amount = 10 };
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string successMessage = "invoice was already fully paid";
+            const string successMessage = "Invoice was already fully paid";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
@@ -221,7 +221,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment { Amount = 1 };
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string successMessage = "another partial payment received, still not fully paid";
+            const string successMessage = "Another partial payment received, still not fully paid";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
@@ -244,7 +244,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment { Amount = 10 };
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string successMessage = "invoice is now fully paid";
+            const string successMessage = "Invoice is now fully paid";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
@@ -269,7 +269,7 @@ namespace RefactorThis.Domain.Tests.Services
             };
             var payment = new Payment { Amount = 1 };
             _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
-            const string successMessage = "invoice is now partially paid";
+            const string successMessage = "Invoice is now partially paid";
 
             // Act
             var result = _invoicePaymentProcessor.ProcessPayment(payment);
