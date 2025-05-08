@@ -141,8 +141,7 @@ namespace RefactorThis.Domain
                 }
             }
 
-            inv.Save();
-
+            _invoiceRepository.SaveInvoice(inv);
             return responseMessage;
         }
     }
