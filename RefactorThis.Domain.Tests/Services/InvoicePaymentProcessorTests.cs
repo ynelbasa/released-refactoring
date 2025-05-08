@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Enums;
+using RefactorThis.Domain.Exceptions;
 using RefactorThis.Domain.Interfaces;
 using RefactorThis.Domain.Services;
 
@@ -32,7 +33,8 @@ namespace RefactorThis.Domain.Tests.Services
 
             // Act
             // Assert
-            var exception = Assert.Throws<InvalidOperationException>(() => _invoicePaymentProcessor.ProcessPayment(payment));
+            var exception =
+                Assert.Throws<MissingInvoiceException>(() => _invoicePaymentProcessor.ProcessPayment(payment));
             Assert.AreEqual(failureMessage, exception.Message);
         }
 
@@ -70,7 +72,8 @@ namespace RefactorThis.Domain.Tests.Services
 
             // Act
             // Assert
-            var exception = Assert.Throws<InvalidOperationException>(() => _invoicePaymentProcessor.ProcessPayment(payment));
+            var exception =
+                Assert.Throws<InvalidInvoiceStateException>(() => _invoicePaymentProcessor.ProcessPayment(payment));
             Assert.AreEqual(failureMessage, exception.Message);
         }
 
