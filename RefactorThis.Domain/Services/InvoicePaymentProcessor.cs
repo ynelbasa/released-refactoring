@@ -4,7 +4,7 @@ using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Enums;
 using RefactorThis.Domain.Interfaces;
 
-namespace RefactorThis.Domain
+namespace RefactorThis.Domain.Services
 {
     public class InvoicePaymentProcessor
     {

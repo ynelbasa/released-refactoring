@@ -56,8 +56,8 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="InvoicePaymentProcessorTests.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
+		<Compile Include="Services\InvoicePaymentProcessorTests.cs" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\RefactorThis.Domain\RefactorThis.Domain.csproj">

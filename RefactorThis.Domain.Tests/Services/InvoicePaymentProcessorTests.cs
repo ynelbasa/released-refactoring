@@ -5,9 +5,9 @@ using NUnit.Framework;
 using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Enums;
 using RefactorThis.Domain.Interfaces;
-using RefactorThis.Persistence;
+using RefactorThis.Domain.Services;
 
-namespace RefactorThis.Domain.Tests
+namespace RefactorThis.Domain.Tests.Services
 {
     [TestFixture]
     public class InvoicePaymentProcessorTests

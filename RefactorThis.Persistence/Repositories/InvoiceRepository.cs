@@ -1,7 +1,7 @@
 using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Interfaces;
 
-namespace RefactorThis.Persistence
+namespace RefactorThis.Persistence.Repositories
 {
     public class InvoiceRepository : IInvoiceRepository
     {
