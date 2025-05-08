@@ -278,5 +278,53 @@ namespace RefactorThis.Domain.Tests.Services
             Assert.True(result.IsSuccess());
             Assert.AreEqual(successMessage, result.GetMessage());
         }
+
+        [Test]
+        public void Should_ReturnInvalidInvoiceTypeMessage_When_DoingInitialPaymentAndInvoiceTypeIsUnsupported()
+        {
+            // Arrange
+            var invoice = new Invoice
+            {
+                Amount = 10,
+                Type = (InvoiceType)4,
+                Payments = new List<Payment>()
+            };
+            var payment = new Payment { Amount = 10 };
+            _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
+            const string failureMessage = "Unable to calculate payment due to unsupported invoice type";
+
+            // Act
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
+
+            // Assert
+            Assert.False(result.IsSuccess());
+            Assert.AreEqual(failureMessage, result.GetMessage());
+        }
+
+        [Test]
+        public void Should_ReturnInvalidInvoiceTypeMessage_When_DoingSucceedingPaymentAndInvoiceTypeIsUnsupported()
+        {
+            // Arrange
+            var invoice = new Invoice
+            {
+                Amount = 10,
+                AmountPaid = 5,
+                Payments = new List<Payment>
+                {
+                    new Payment { Amount = 5 }
+                },
+                Type = (InvoiceType)4
+            };
+            var payment = new Payment { Amount = 5 };
+            _invoiceRepositoryMock.Setup(x => x.GetInvoice(payment.Reference)).Returns(invoice);
+            const string failureMessage = "Unable to calculate payment due to unsupported invoice type";
+
+            // Act
+            var result = _invoicePaymentProcessor.ProcessPayment(payment);
+
+            // Assert
+            Assert.False(result.IsSuccess());
+            Assert.AreEqual(failureMessage, result.GetMessage());
+        }
     }
 }

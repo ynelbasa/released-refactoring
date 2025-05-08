@@ -92,7 +92,11 @@ namespace RefactorThis.Business.Services
         private Result ProcessSucceedingPayment(Payment payment, Invoice invoice)
         {
             var isFinalPayment = (invoice.Amount - invoice.AmountPaid) == payment.Amount;
-            _succeedingPaymentCalculators[invoice.Type](payment, invoice);
+
+            if (!_succeedingPaymentCalculators.TryGetValue(invoice.Type, out var paymentCalculator))
+                return Result.Failure(InvoiceValidationMessages.InvalidInvoiceType);
+
+            paymentCalculator(payment, invoice);
             var responseMessage = isFinalPayment
                 ? InvoiceMessages.FinalPaymentReceived
                 : InvoiceMessages.PartialPaymentReceived;
@@ -102,7 +106,11 @@ namespace RefactorThis.Business.Services
         private Result ProcessInitialPayment(Payment payment, Invoice invoice)
         {
             var isFullPayment = invoice.Amount == payment.Amount;
-            _initialPaymentCalculators[invoice.Type](payment, invoice);
+
+            if (!_initialPaymentCalculators.TryGetValue(invoice.Type, out var paymentCalculator))
+                return Result.Failure(InvoiceValidationMessages.InvalidInvoiceType);
+
+            paymentCalculator(payment, invoice);
             var responseMessage = isFullPayment ? InvoiceMessages.FullyPaid : InvoiceMessages.PartiallyPaid;
             return Result.Success(responseMessage);
         }
