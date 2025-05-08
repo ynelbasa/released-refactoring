@@ -13,7 +13,7 @@
 
         public bool IsSuccess() => _isSuccess;
         public string GetMessage() => _message;
-        public static Result Success(string message) => new Result(true, message);
+        public static Result Success(string message = "") => new Result(true, message);
         public static Result Failure(string errorMessage) => new Result(false, errorMessage);
     }
 }

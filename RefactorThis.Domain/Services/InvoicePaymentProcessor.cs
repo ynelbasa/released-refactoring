@@ -35,29 +35,8 @@ namespace RefactorThis.Domain.Services
         {
             var invoice = _invoiceRepository.GetInvoice(payment.Reference);
 
-            if (invoice == null)
-                return Result.Failure(InvoiceValidationMessages.InvoiceNotFound);
-
-            if (invoice.Amount == 0 && invoice.Payments != null)
-                return Result.Failure(InvoiceValidationMessages.InvalidInvoice);
-
-            var isPaymentNotRequired = invoice.Amount == 0 && (invoice.Payments == null || !invoice.Payments.Any());
-            if (isPaymentNotRequired)
-                return Result.Failure(InvoiceValidationMessages.PaymentNotRequired);
-
-            var isInvoiceFullyPaid = invoice.Payments.Sum(x => x.Amount) != 0 &&
-                                     invoice.Amount == invoice.Payments.Sum(x => x.Amount);
-            if (isInvoiceFullyPaid)
-                return Result.Failure(InvoiceValidationMessages.InvoiceAlreadyFullyPaid);
-
-            var isOverpayingPartialAmount = invoice.Payments.Sum(x => x.Amount) != 0 &&
-                                            payment.Amount > (invoice.Amount - invoice.AmountPaid);
-            if (isOverpayingPartialAmount)
-                return Result.Failure(InvoiceValidationMessages.PaymentExceedsPartialAmount);
-
-            var isOverpayingInvoiceAmount = payment.Amount > invoice.Amount;
-            if (isOverpayingInvoiceAmount)
-                return Result.Failure(InvoiceValidationMessages.PaymentExceedsInvoiceAmount);
+            var validationResult = ValidateInvoice(payment, invoice);
+            if (!validationResult.IsSuccess()) return validationResult;
 
             var hasInitialPayment = invoice.Payments != null && invoice.Payments.Any();
             var responseMessage = hasInitialPayment
@@ -66,6 +45,47 @@ namespace RefactorThis.Domain.Services
 
             _invoiceRepository.SaveInvoice(invoice);
             return responseMessage;
+        }
+
+        private Result ValidateInvoice(Payment payment, Invoice invoice)
+        {
+            if (invoice == null)
+            {
+                return Result.Failure(InvoiceValidationMessages.InvoiceNotFound);
+            }
+
+            if (invoice.Amount == 0 && invoice.Payments != null)
+            {
+                return Result.Failure(InvoiceValidationMessages.InvalidInvoice);
+            }
+
+            var isPaymentNotRequired = invoice.Amount == 0 && (invoice.Payments == null || !invoice.Payments.Any());
+            if (isPaymentNotRequired)
+            {
+                return Result.Failure(InvoiceValidationMessages.PaymentNotRequired);
+            }
+
+            var isInvoiceFullyPaid = invoice.Payments.Sum(x => x.Amount) != 0 &&
+                                     invoice.Amount == invoice.Payments.Sum(x => x.Amount);
+            if (isInvoiceFullyPaid)
+            {
+                return Result.Failure(InvoiceValidationMessages.InvoiceAlreadyFullyPaid);
+            }
+
+            var isOverpayingPartialAmount = invoice.Payments.Sum(x => x.Amount) != 0 &&
+                                            payment.Amount > (invoice.Amount - invoice.AmountPaid);
+            if (isOverpayingPartialAmount)
+            {
+                return Result.Failure(InvoiceValidationMessages.PaymentExceedsPartialAmount);
+            }
+
+            var isOverpayingInvoiceAmount = payment.Amount > invoice.Amount;
+            if (isOverpayingInvoiceAmount)
+            {
+                return Result.Failure(InvoiceValidationMessages.PaymentExceedsInvoiceAmount);
+            }
+
+            return Result.Success();
         }
 
         private Result ProcessSucceedingPayment(Payment payment, Invoice invoice)
