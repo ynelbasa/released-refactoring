@@ -38,6 +38,7 @@
 		<Reference Include="System.Xml" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="Interfaces\IInvoiceRepository.cs" />
 		<Compile Include="InvoiceService.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>

@@ -1,14 +1,15 @@
 using System;
 using System.Linq;
+using RefactorThis.Domain.Interfaces;
 using RefactorThis.Persistence;
 
 namespace RefactorThis.Domain
 {
     public class InvoiceService
     {
-        private readonly InvoiceRepository _invoiceRepository;
+        private readonly IInvoiceRepository _invoiceRepository;
 
-        public InvoiceService(InvoiceRepository invoiceRepository)
+        public InvoiceService(IInvoiceRepository invoiceRepository)
         {
             _invoiceRepository = invoiceRepository;
         }
