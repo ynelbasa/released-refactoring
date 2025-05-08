@@ -9,7 +9,7 @@
 		<OutputType>Library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
 		<RootNamespace>RefactorThis.Domain.Tests</RootNamespace>
-		<AssemblyName>RefactorThis.Domain.Tests</AssemblyName>
+		<AssemblyName>RefactorThis.Business.Tests</AssemblyName>
 		<TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
 		<FileAlignment>512</FileAlignment>
 	</PropertyGroup>
@@ -60,17 +60,17 @@
 		<Compile Include="Services\InvoicePaymentProcessorTests.cs" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Include="packages.config" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\RefactorThis.Business\RefactorThis.Business.csproj">
+	    <Project>{a9949b7c-beee-4f73-8b9b-45cde5dada08}</Project>
+	    <Name>RefactorThis.Business</Name>
+	  </ProjectReference>
 	  <ProjectReference Include="..\RefactorThis.Domain\RefactorThis.Domain.csproj">
 	    <Project>{5310b2fe-e26d-414e-b656-1f74c5a70368}</Project>
 	    <Name>RefactorThis.Domain</Name>
 	  </ProjectReference>
-	  <ProjectReference Include="..\RefactorThis.Persistence\RefactorThis.Persistence.csproj">
-	    <Project>{33cdc796-ff75-449c-9637-59c2efc46361}</Project>
-	    <Name>RefactorThis.Persistence</Name>
-	  </ProjectReference>
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="packages.config" />
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

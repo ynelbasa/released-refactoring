@@ -1,4 +1,4 @@
-﻿namespace RefactorThis.Domain
+﻿namespace RefactorThis.Business.Models
 {
     public class Result
     {

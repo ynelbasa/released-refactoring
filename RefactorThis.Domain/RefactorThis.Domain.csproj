@@ -43,10 +43,7 @@
 		<Compile Include="Entities\Invoice.cs" />
 		<Compile Include="Entities\Payment.cs" />
 		<Compile Include="Enums\InvoiceType.cs" />
-		<Compile Include="Interfaces\IInvoiceRepository.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="Result.cs" />
-		<Compile Include="Services\InvoicePaymentProcessor.cs" />
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

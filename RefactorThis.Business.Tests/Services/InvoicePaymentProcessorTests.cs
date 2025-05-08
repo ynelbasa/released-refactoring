@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using RefactorThis.Business.Interfaces;
+using RefactorThis.Business.Services;
 using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Enums;
-using RefactorThis.Domain.Interfaces;
-using RefactorThis.Domain.Services;
 
 namespace RefactorThis.Domain.Tests.Services
 {

@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RefactorThis.Business.Interfaces;
+using RefactorThis.Business.Models;
 using RefactorThis.Domain.Constants;
 using RefactorThis.Domain.Entities;
 using RefactorThis.Domain.Enums;
-using RefactorThis.Domain.Interfaces;
 
-namespace RefactorThis.Domain.Services
+namespace RefactorThis.Business.Services
 {
     public class InvoicePaymentProcessor
     {

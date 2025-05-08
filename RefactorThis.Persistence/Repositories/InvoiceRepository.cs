@@ -1,5 +1,5 @@
+using RefactorThis.Business.Interfaces;
 using RefactorThis.Domain.Entities;
-using RefactorThis.Domain.Interfaces;
 
 namespace RefactorThis.Persistence.Repositories
 {

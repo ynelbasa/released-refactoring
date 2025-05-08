@@ -1,6 +1,6 @@
 ﻿using RefactorThis.Domain.Entities;
 
-namespace RefactorThis.Domain.Interfaces
+namespace RefactorThis.Business.Interfaces
 {
     public interface IInvoiceRepository
     {
